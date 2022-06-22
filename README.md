@@ -1,6 +1,8 @@
 # GAMMA: The Wanderings of Odysseus in 3D Scenes
 
-![](demo.gif)
+<p align="center">
+  <img width="960" height="540" src="demo.gif">
+</p>
 
 This repo contains the official implementation of our paper. If you find our work useful in your research, please consider citing it:
 
