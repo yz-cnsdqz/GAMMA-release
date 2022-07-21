@@ -8,6 +8,11 @@ import os
 import numpy as np
 import pickle
 import subprocess
+from exp_GAMMAPrimitive.gen_motion_long_in_Cubes import run
+
+gammaResultsDir = "GammaResults"
+gammaSourceDir = "GammaSource"
+gammaResultFileName = "results.pkl"
 
 hostName = "localhost"
 serverPort = 8080
@@ -34,23 +39,66 @@ class GammaServer(BaseHTTPRequestHandler):
             
         # read the message and convert it into a python dictionary
         length = int(self.headers['Content-Length'])
-        message = json.loads(self.rfile.read(length))
-        self.handle_request(message)
+        m_str = self.rfile.read(length)
+        print("message: "+ m_str.decode("utf-8") )
+        message = json.loads(m_str)
+        self.delete_logs()
+
+        response = self.handle_request(message)
         
         # send the message back
         self._set_headers()
-        self.wfile.write(bytes(json.dumps(message), "utf-8"))
+        self.wfile.write(bytes(json.dumps(response), "utf-8"))
     
     def handle_request(self, message):
-        if not os.path.exists("TempData"):
-            os.mkdir("TempData")
         np_arr = np.asarray(message, dtype=np.float64)
         np_arr = np_arr.reshape(np_arr.size//3, 3)
-        with open("TempData/traj_1.pkl", 'wb') as f:
+        with open(os.path.join(gammaSourceDir, "traj_1.pkl"), 'wb') as f:
             pickle.dump(np_arr, f)
+        
+        args = {"cfg_policy": 'MPVAEPolicy_v0',
+                'max_depth': 60, 
+                'ground_euler': [0, 0, 0], 
+                'gpu_index': 0, 
+                'random_seed': 0, 
+                'verbose': 1}
+        run(args)
+        json_results = self.to_json(os.path.join(gammaResultsDir, gammaResultFileName))
+        return json_results
 
-        out = subprocess.check_output("cd /mnt/c/Users/Lukas/Projects/GAMMA-release/ && /home/lukas/miniconda3/envs/gamma/bin/python exp_GAMMAPrimitive/gen_motion_long_in_Cubes.py --cfg MPVAEPolicy_v0", shell=True)
+        # out = subprocess.check_output("conda init bash && conda activate gamma && python exp_GAMMAPrimitive/gen_motion_long_in_Cubes.py --cfg MPVAEPolicy_v0", shell=True)
         # print(out)
+    
+    def to_json(self, source_file_path):
+        with open(source_file_path, "rb") as f:
+            dataall = pickle.load(f, encoding="latin1")
+            new_dict = self.transform_to_lists(dataall)
+            json_object = json.dumps(new_dict, indent = 4)
+            return json_object
+    
+    def transform_to_lists(self, data_dict):
+        res = {}
+        for key, value in data_dict.items():
+            if  type(value) is dict:
+                res[key] = self.transform_to_lists(value)
+            elif type(value) is np.ndarray:
+                value = np.squeeze(value)
+                temp_dict = {"shape": list(value.shape), "data": np.reshape(value, -1).tolist()}
+                res[key] = temp_dict
+            elif type(value) is list:
+                res[key] = [self.transform_to_lists(x) for x in value]
+            elif key == "curr_target_wpath":
+                res[key] = {"index": value[0], "position": value[1].tolist()}
+            else:
+                res[key] = value
+
+        return res
+
+    def delete_logs(self):
+        for item in os.listdir(gammaResultsDir):
+            if item.endswith(".log"):
+                os.remove(os.path.join(gammaResultsDir, item))
+        
 
         
 

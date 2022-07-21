@@ -7,6 +7,7 @@
 """
 
 
+from tabnanny import verbose
 import numpy as np
 import random
 import argparse
@@ -34,7 +35,7 @@ sys.setrecursionlimit(10000) # if too small, deepcopy will reach the maximal dep
 
 def log_and_print(logstr):
     logger.info(logstr)
-    if args.verbose:
+    if verbose:
         print(logstr)
 
 
@@ -390,33 +391,49 @@ def configure_model(cfg, gpu_index, seed):
     return testop
 
 
-
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--cfg_policy', default='MPVAEPolicy_v0',
-                        help='specify the motion model and the policy config.')
-    parser.add_argument('--max_depth', type=int, default=60,
-                        help='the maximal number of (0.25-second) motion primitives in each motion.') 
-    parser.add_argument('--ground_euler', nargs=3, type=float, default=[0, 0, 0],
-                        help='the gorund plan rotation. Normally we set it to flat with Z-up Y-forward.') # which dataset to evaluate? choose only one
-    parser.add_argument('--gpu_index', type=int, default=0)
-    parser.add_argument('--random_seed', type=int, default=0)
-    parser.add_argument('--verbose', type=int, default=1)
-    args = parser.parse_args()
-
+def run(args):
     """setup"""
-    np.random.seed(args.random_seed)
-    torch.manual_seed(args.random_seed)
+    global device
+
+    np.random.seed(args['random_seed'])
+    torch.manual_seed(args['random_seed'])
     dtype = torch.float32
     torch.set_default_dtype(dtype)
-    device = torch.device('cuda', index=args.gpu_index) if args.gpu_index >= 0 and torch.cuda.is_available() else torch.device('cpu')
+    device = torch.device('cuda', index=args['gpu_index']) if args['gpu_index'] >= 0 and torch.cuda.is_available() else torch.device('cpu')
     if torch.cuda.is_available():
-        torch.cuda.set_device(args.gpu_index)
+        torch.cuda.set_device(args['gpu_index'])
     torch.set_grad_enabled(False)
 
     """global parameter"""
-    random_seed = args.random_seed
+    global random_seed
+    global verbose
+    global n_gens_1frame
+    global n_gens_2frame
+    global max_nodes_to_expand
+    global GOAL_THRESH
+    global HARD_CONTACT
+    global USE_POLICY_MEAN
+    global USE_POLICY
+    global SCENE_ORI
+    global max_depth
+    global NUM_SEQ
+    global cfg_policy
+    global body_repr
+    global REPROJ_FACTOR
+    global rotmat_g
+    global genop_1frame_male
+    global genop_1frame_female
+    global genop_2frame_male 
+    global genop_2frame_female
+    global outfoldername
+    global smplxparser_mp
+    global smplxparser_2frame
+    global smplxparser_1frame
+    global policy_model
+    global logger
+
+    verbose = args['verbose']
+    random_seed = args['random_seed']
     n_gens_1frame = 16     # the number of primitives to generate from a single-frame motion seed
     n_gens_2frame = 4      # the nunber of primitives to generate from a two-frame motion seed
     max_nodes_to_expand = 4 # in the tree search, how many nodes to expand at the same level.
@@ -425,11 +442,11 @@ if __name__ == '__main__':
     USE_POLICY_MEAN = False # only use the mean of the policy. If False, random samples are drawn from the policy.
     USE_POLICY = True # If False, random motion generation will be performed.
     SCENE_ORI='ZupYf' # the coordinate setting of the scene.
-    max_depth = args.max_depth
+    max_depth = args['max_depth']
     NUM_SEQ = 1 # the number of sequences to produce
 
 
-    cfg_policy = ConfigCreator(args.cfg_policy)
+    cfg_policy = ConfigCreator(args['cfg_policy'])
     cfg_1frame_male = cfg_policy.trainconfig['cfg_1frame_male']
     cfg_2frame_male = cfg_policy.trainconfig['cfg_2frame_male']
     cfg_1frame_female = cfg_policy.trainconfig['cfg_1frame_female']
@@ -450,10 +467,10 @@ if __name__ == '__main__':
 
 
     """set GAMMA primitive networks"""
-    genop_1frame_male = configure_model(cfg_1frame_male, args.gpu_index, args.random_seed)
-    genop_1frame_female = configure_model(cfg_1frame_female, args.gpu_index, args.random_seed)
-    genop_2frame_male = configure_model(cfg_2frame_male, args.gpu_index, args.random_seed)
-    genop_2frame_female = configure_model(cfg_2frame_female, args.gpu_index, args.random_seed)
+    genop_1frame_male = configure_model(cfg_1frame_male, args['gpu_index'], args['random_seed'])
+    genop_1frame_female = configure_model(cfg_1frame_female, args['gpu_index'], args['random_seed'])
+    genop_2frame_male = configure_model(cfg_2frame_male, args['gpu_index'], args['random_seed'])
+    genop_2frame_female = configure_model(cfg_2frame_female, args['gpu_index'], args['random_seed'])
 
     policy_model = GAMMAPolicy(cfg_policy.modelconfig)
     policy_model.eval()
@@ -508,3 +525,18 @@ if __name__ == '__main__':
 
         gen_motion(data, max_depth=max_depth)
         idx_seq += 1
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--cfg_policy', default='MPVAEPolicy_v0',
+                        help='specify the motion model and the policy config.')
+    parser.add_argument('--max_depth', type=int, default=60,
+                        help='the maximal number of (0.25-second) motion primitives in each motion.') 
+    parser.add_argument('--ground_euler', nargs=3, type=float, default=[0, 0, 0],
+                        help='the gorund plan rotation. Normally we set it to flat with Z-up Y-forward.') # which dataset to evaluate? choose only one
+    parser.add_argument('--gpu_index', type=int, default=0)
+    parser.add_argument('--random_seed', type=int, default=0)
+    parser.add_argument('--verbose', type=int, default=1)
+    args = parser.parse_args()
+    run(vars(args))
+
+    
