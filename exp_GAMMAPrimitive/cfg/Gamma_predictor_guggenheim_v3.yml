@@ -1,0 +1,44 @@
+modelconfig:
+  body_repr: ssm2_67
+  h_dim: 256
+  z_dim: 128
+  use_drnn_mlp: true
+  hdims_mlp:
+    - 512
+    - 256
+  residual: true
+  t_his: 2
+  var_seed_len: true
+
+lossconfig:
+  weight_rec: 1.0
+  weight_td: 3.0
+  weight_kld: 1.0
+  annealing_kld: false
+  robust_kld: true
+
+trainconfig:
+  fine_tune: true
+  max_rollout: 8
+  learning_rate: 0.0005
+  locomotion_only: true
+  batch_size: 64
+  num_epochs: 100
+  num_epochs_fix: 25
+  saving_per_X_ep: 25
+
+  subsets:
+    # - HumanEva
+    - CMU
+    - MPI_HDM05
+    - BMLmovi
+    - EKUT
+    # - BioMotionLab_NTroje # this one contains skating motion
+    - KIT
+    - Transitions_mocap
+    - Eyes_Japan_Dataset
+    - TotalCapture
+
+
+
+

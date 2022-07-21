@@ -425,7 +425,7 @@ if __name__ == '__main__':
     USE_POLICY = True # If False, random motion generation will be performed.
     SCENE_ORI='ZupYf' # the coordinate setting of the scene.
     max_depth = args.max_depth
-    NUM_SEQ = 10 # the number of sequences to produce
+    NUM_SEQ = 1 # the number of sequences to produce
 
 
     cfg_policy = ConfigCreator(args.cfg_policy)
@@ -442,7 +442,7 @@ if __name__ == '__main__':
     rotmat_g = Rg.as_matrix()
     # body motion data
     bm_path = config_env.get_body_model_path()
-    batch_gen = BatchGeneratorFollowPathInCubes(dataset_path='exp_GAMMAPrimitive/data/Cubes/scene_cubes_000_navimesh.obj_traj',
+    batch_gen = BatchGeneratorFollowPathInCubes(dataset_path='GammaSource',
                                                 body_model_path=bm_path,
                                                 scene_ori=SCENE_ORI)
     batch_gen.get_rec_list()
@@ -490,7 +490,7 @@ if __name__ == '__main__':
 
 
     """main block for motion generation"""
-    resultdir = 'results/tmp222/GAMMAVAEComboPolicy_PPO_demo/{}'.format(args.cfg_policy)
+    resultdir = 'GammaResults/{}'.format(args.cfg_policy)
 
     idx_seq = 0
     while idx_seq < NUM_SEQ:

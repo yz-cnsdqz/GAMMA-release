@@ -378,7 +378,7 @@ def rollout(body_s, save_file=True, idx_seq=0):
     
     if save_file:
         """visualze rollout results in blender, for debugging"""
-        save_rollout_results(wpath, outmps, 'results/tmp123/GAMMAVAEComboPolicy_PPO/{}'.format(args.cfg_policy), idx_seq=idx_seq)
+        save_rollout_results(wpath, outmps, 'GammaResults/{}'.format(args.cfg_policy), idx_seq=idx_seq)
     
 
     return None
@@ -427,7 +427,7 @@ if __name__ == '__main__':
     MAX_DEPTH = args.max_depth
     GOAL_THRESH = 0.75
     N_GENS_ROOT = 1
-    N_GENS_LEAF = 32 
+    N_GENS_LEAF = 32 # 128 maybe
     NUM_SEQ = 4 # the number of sequences to produce
 
 
@@ -437,7 +437,7 @@ if __name__ == '__main__':
     rotmat_g = Rg.as_matrix()
     # body motion data
     bm_path = config_env.get_body_model_path()
-    batch_gen = BatchGeneratorFollowPathInCubes(dataset_path='exp_GAMMAPrimitive/data/Cubes/scene_cubes_000_navimesh.obj_traj',
+    batch_gen = BatchGeneratorFollowPathInCubes(dataset_path='GammaSource',
                                                 body_model_path=bm_path,
                                                 scene_ori=SCENE_ORI)
     batch_gen.get_rec_list()
