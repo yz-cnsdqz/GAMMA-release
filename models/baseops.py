@@ -38,7 +38,7 @@ basic network modules
 """
 
 def get_logger(log_dir, mode='train'):
-    logger = logging.getLogger(log_dir)
+    logger = logging.getLogger(log_dir+"testlogger")
     ts = str(datetime.datetime.now()).split('.')[0].replace(" ", "_")
     ts = ts.replace(":", "_").replace("-","_")
     file_path = os.path.join(log_dir, '{}_{}.log'.format(mode, ts))

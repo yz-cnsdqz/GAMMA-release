@@ -362,7 +362,8 @@ def gen_motion(body_s, max_depth=10):
         gen_results.reverse()
         output['motion'] = gen_results
         ### save to file
-        outfilename = 'results_{}_{}.pkl'.format(body_repr, motion_idx)
+        # outfilename = 'results_{}_{}.pkl'.format(body_repr, motion_idx)
+        outfilename = 'results.pkl'
         outfilename_f = os.path.join(outfoldername, outfilename)
         with open(outfilename_f, 'wb') as f:
             pickle.dump(output, f)
@@ -490,15 +491,18 @@ if __name__ == '__main__':
 
 
     """main block for motion generation"""
-    resultdir = 'GammaResults/{}'.format(args.cfg_policy)
+    # resultdir = 'GammaResults/{}'.format(args.cfg_policy)
+    resultdir = 'GammaResults/'
+
 
     idx_seq = 0
     while idx_seq < NUM_SEQ:
         data = batch_gen.next_body()
-        outfoldername = '{}/randseed{:03d}_seq{:03d}_{}/'.format(resultdir, random_seed,
-                                                        idx_seq,data['wpath_filename'])
-        if not os.path.exists(outfoldername):
-            os.makedirs(outfoldername)
+        # outfoldername = '{}/randseed{:03d}_seq{:03d}_{}/'.format(resultdir, random_seed,
+        #                                                 idx_seq,data['wpath_filename'])
+        outfoldername = resultdir
+        # if not os.path.exists(outfoldername):
+        #     os.makedirs(outfoldername)
         logger = get_logger(outfoldername, mode='eval')
         log_and_print('[INFO] generate sequence {:d}'.format(idx_seq))
 
