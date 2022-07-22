@@ -2,19 +2,18 @@
 # http://127.0.0.1:8080/
 # curl --data "[-1.689821, -1.027213, -1.733333, -1.733333, -1.027213, -1.666667, -2.066667, -1.010546, -1.666667, -2.4, -1.010546, -1.766666, -2.833333, -1.010546, -2]" --header "Content-Type: application/json" http://localhost:8080
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import time
 import json
 import os
 import numpy as np
 import pickle
-import subprocess
 from exp_GAMMAPrimitive.gen_motion_long_in_Cubes import run
+import socket   
 
 gammaResultsDir = "GammaResults"
 gammaSourceDir = "GammaSource"
 gammaResultFileName = "results.pkl"
-
-hostName = "localhost"
+# hostName = "localhost"
+# hostName = "172.24.85.77"
 serverPort = 8080
 
 class GammaServer(BaseHTTPRequestHandler):
@@ -98,14 +97,17 @@ class GammaServer(BaseHTTPRequestHandler):
         for item in os.listdir(gammaResultsDir):
             if item.endswith(".log"):
                 os.remove(os.path.join(gammaResultsDir, item))
-        
+    
+    
+def get_ip_address():
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        return s.getsockname()[0]
 
-        
-
-
-if __name__ == "__main__":        
-    webServer = HTTPServer((hostName, serverPort), GammaServer)
-    print("Server started http://%s:%s" % (hostName, serverPort))
+if __name__ == "__main__": 
+    ip_address = get_ip_address()
+    webServer = HTTPServer((ip_address, serverPort), GammaServer)
+    print("Server started http://%s:%s" % (ip_address, serverPort))
 
     try:
         webServer.serve_forever()
