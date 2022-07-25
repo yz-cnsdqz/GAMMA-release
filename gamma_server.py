@@ -12,6 +12,8 @@ import socket
 gammaResultsDir = "GammaResults"
 gammaSourceDir = "GammaSource"
 gammaResultFileName = "results.pkl"
+STORE_JSON = True
+gammaResultsJsonFileName = "results.json"
 # hostName = "localhost"
 # hostName = "172.24.85.77"
 serverPort = 8080
@@ -63,6 +65,9 @@ class GammaServer(BaseHTTPRequestHandler):
                 'verbose': 1}
         run(args)
         json_results = self.to_json(os.path.join(gammaResultsDir, gammaResultFileName))
+        if STORE_JSON:
+            with open(os.path.join(gammaResultsDir, gammaResultsJsonFileName), "w") as out:
+                out.write(str(json_results))
         return json_results
 
         # out = subprocess.check_output("conda init bash && conda activate gamma && python exp_GAMMAPrimitive/gen_motion_long_in_Cubes.py --cfg MPVAEPolicy_v0", shell=True)
