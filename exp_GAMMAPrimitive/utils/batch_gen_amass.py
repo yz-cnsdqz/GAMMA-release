@@ -480,7 +480,8 @@ class BatchGeneratorFollowPathInCubes(object):
             xbo_dict['betas'] = character_data['betas']
         else:
             gender = random.choice(['female', 'male'])
-            xbo_dict['betas'] = np.random.randn(1,10)
+            # xbo_dict['betas'] = np.random.randn(1,10)
+            xbo_dict['betas'] = np.zeros((1, 10))
 
         xbo_dict['transl'] = wpath[0][None,...] #[1,3]
         xbo_dict['global_orient'] = self.get_bodyori_from_wpath(wpath[0], wpath[1])[None,...]
