@@ -14,6 +14,8 @@ gammaSourceDir = "GammaSource"
 gammaResultFileName = "results.pkl"
 STORE_JSON = True
 gammaResultsJsonFileName = "results.json"
+IGNORED_KEYS = ["betas", "markers", "markers_proj", "joints", "mp_latent", "timestamp", "curr_target_wpath"]
+
 # hostName = "localhost"
 # hostName = "172.24.85.77"
 serverPort = 8080
@@ -83,7 +85,9 @@ class GammaServer(BaseHTTPRequestHandler):
     def transform_to_lists(self, data_dict):
         res = {}
         for key, value in data_dict.items():
-            if  type(value) is dict:
+            if key in IGNORED_KEYS:
+                continue
+            elif  type(value) is dict:
                 res[key] = self.transform_to_lists(value)
             elif type(value) is np.ndarray:
                 value = np.squeeze(value)
