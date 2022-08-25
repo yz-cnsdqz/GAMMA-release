@@ -447,10 +447,13 @@ def run(args):
 
 
     cfg_policy = ConfigCreator(args['cfg_policy'])
-    cfg_1frame_male = cfg_policy.trainconfig['cfg_1frame_male']
-    cfg_2frame_male = cfg_policy.trainconfig['cfg_2frame_male']
-    cfg_1frame_female = cfg_policy.trainconfig['cfg_1frame_female']
-    cfg_2frame_female = cfg_policy.trainconfig['cfg_2frame_female']
+    # cfg_1frame_male = cfg_policy.trainconfig['cfg_1frame_male']
+    # cfg_2frame_male = cfg_policy.trainconfig['cfg_2frame_male']
+    # cfg_1frame_female = cfg_policy.trainconfig['cfg_1frame_female']
+    # cfg_2frame_female = cfg_policy.trainconfig['cfg_2frame_female']
+    cfg_male =  cfg_policy.trainconfig['cfg_male']
+    cfg_female =  cfg_policy.trainconfig['cfg_female']
+
     body_repr = cfg_policy.modelconfig['body_repr']
     REPROJ_FACTOR = cfg_policy.modelconfig.get('reproj_factor', 1.0)
 
@@ -467,10 +470,14 @@ def run(args):
 
 
     """set GAMMA primitive networks"""
-    genop_1frame_male = configure_model(cfg_1frame_male, args['gpu_index'], args['random_seed'])
-    genop_1frame_female = configure_model(cfg_1frame_female, args['gpu_index'], args['random_seed'])
-    genop_2frame_male = configure_model(cfg_2frame_male, args['gpu_index'], args['random_seed'])
-    genop_2frame_female = configure_model(cfg_2frame_female, args['gpu_index'], args['random_seed'])
+    # genop_1frame_male = configure_model(cfg_1frame_male, args['gpu_index'], args['random_seed'])
+    # genop_1frame_female = configure_model(cfg_1frame_female, args['gpu_index'], args['random_seed'])
+    # genop_2frame_male = configure_model(cfg_2frame_male, args['gpu_index'], args['random_seed'])
+    # genop_2frame_female = configure_model(cfg_2frame_female, args['gpu_index'], args['random_seed'])
+    genop_1frame_male = configure_model(cfg_male, args['gpu_index'], args['random_seed'])
+    genop_1frame_female = configure_model(cfg_female, args['gpu_index'], args['random_seed'])
+    genop_2frame_male = configure_model(cfg_male, args['gpu_index'], args['random_seed'])
+    genop_2frame_female = configure_model(cfg_female, args['gpu_index'], args['random_seed'])
 
     policy_model = GAMMAPolicy(cfg_policy.modelconfig)
     policy_model.eval()

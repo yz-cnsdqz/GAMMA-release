@@ -59,8 +59,8 @@ class GammaServer(BaseHTTPRequestHandler):
         with open(os.path.join(gammaSourceDir, "traj_1.pkl"), 'wb') as f:
             pickle.dump(np_arr, f)
         
-        args = {"cfg_policy": 'MPVAEPolicy_v0',
-                'max_depth': 60, 
+        args = {"cfg_policy": 'Gamma_policy_guggenheim_v5',
+                'max_depth': 120, 
                 'ground_euler': [0, 0, 0], 
                 'gpu_index': 0, 
                 'random_seed': 0, 
