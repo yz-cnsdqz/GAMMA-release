@@ -394,9 +394,9 @@ def configure_model(cfg, gpu_index, seed):
 def run(args):
     """setup"""
     global device
-
-    np.random.seed(args['random_seed'])
-    torch.manual_seed(args['random_seed'])
+    if(args['random_seed'] != None):
+        np.random.seed(args['random_seed'])
+        torch.manual_seed(args['random_seed'])
     dtype = torch.float32
     torch.set_default_dtype(dtype)
     device = torch.device('cuda', index=args['gpu_index']) if args['gpu_index'] >= 0 and torch.cuda.is_available() else torch.device('cpu')

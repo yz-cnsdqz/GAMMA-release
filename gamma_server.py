@@ -14,7 +14,7 @@ gammaSourceDir = "GammaSource"
 gammaResultFileName = "results.pkl"
 STORE_JSON = True
 gammaResultsJsonFileName = "results.json"
-IGNORED_KEYS = ["betas", "markers", "markers_proj", "joints", "mp_latent", "timestamp", "curr_target_wpath"]
+IGNORED_KEYS = ["markers", "markers_proj", "joints", "mp_latent", "timestamp", "curr_target_wpath"]
 
 # hostName = "localhost"
 # hostName = "172.24.85.77"
@@ -63,7 +63,7 @@ class GammaServer(BaseHTTPRequestHandler):
                 'max_depth': 120, 
                 'ground_euler': [0, 0, 0], 
                 'gpu_index': 0, 
-                'random_seed': 0, 
+                'random_seed': None, 
                 'verbose': 1}
         run(args)
         json_results = self.to_json(os.path.join(gammaResultsDir, gammaResultFileName))
