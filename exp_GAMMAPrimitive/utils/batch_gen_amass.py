@@ -459,7 +459,7 @@ class BatchGeneratorFollowPathInCubes(object):
         return glorot_aa
 
 
-    def next_body(self, character_file=None):
+    def next_body(self, gender=None, betas=None, character_file=None):
         '''
         - get the next sample from the dataset, which is used for the target of motion planning
         '''
@@ -479,8 +479,12 @@ class BatchGeneratorFollowPathInCubes(object):
             gender = character_data['gender']
             xbo_dict['betas'] = character_data['betas']
         else:
-            gender = random.choice(['female', 'male'])
-            xbo_dict['betas'] = np.random.randn(1,10)
+            if gender is None:
+                gender = random.choice(['female', 'male'])
+            if betas is None:
+                xbo_dict['betas'] = np.random.randn(1,10)
+            else:
+                xbo_dict['betas'] = betas
             #xbo_dict['betas'] = np.zeros((1, 10))
 
         xbo_dict['transl'] = wpath[0][None,...] #[1,3]

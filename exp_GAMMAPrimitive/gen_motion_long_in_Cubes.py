@@ -521,7 +521,7 @@ def run(args):
 
     idx_seq = 0
     while idx_seq < NUM_SEQ:
-        data = batch_gen.next_body()
+        data = batch_gen.next_body(args['gender'], args['betas'])
         # outfoldername = '{}/randseed{:03d}_seq{:03d}_{}/'.format(resultdir, random_seed,
         #                                                 idx_seq,data['wpath_filename'])
         outfoldername = resultdir
