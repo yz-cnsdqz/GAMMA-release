@@ -10,10 +10,11 @@ from exp_GAMMAPrimitive.gen_motion_long_in_Cubes import run
 import socket   
 import random
 
-# N_MALE_BETA_SHAPES = 3
-# N_FEMALE_BETA_SHAPES = 3
-# female_betas = np.random.randn(N_FEMALE_BETA_SHAPES, 1, 10)
-# male_betas =  np.random.randn(N_MALE_BETA_SHAPES, 1, 10)
+np.random.seed(42)
+N_MALE_BETA_SHAPES = 3
+N_FEMALE_BETA_SHAPES = 3
+female_betas = np.random.randn(N_FEMALE_BETA_SHAPES, 1, 10)
+male_betas =  np.random.randn(N_MALE_BETA_SHAPES, 1, 10)
 
 # female_betas = np.asarray([
 #     [[-1.135557, 0.4900467, -1.571586, 0.324353, 0.6154498, 1.360919, -0.4199827, 0.68612, -0.5775192, 0.09844136]], 
@@ -23,9 +24,14 @@ import random
 #     [[-0.9842331, -0.9684765, -1.111603, 1.859693, -1.533256, 0.8656253, -0.542197, -0.4216726, 0.1279395, 0.4362581]],
 #     [[-2.02, 1.44, 0.6797122, -1.945877, -0.4878228, 1.552606, -0.9787962, 0.04247403, 1.987148, 0.4292719]],
 #     [[1.652401, 3.57, 0.261369, -1.349104, 0.858787, -1.169071, 0.4518526, -1.11841, -0.1033189, 1.916406]]], dtype=np.float32)
+# female_betas = np.zeros((1, 1, 10))
+# male_betas = np.zeros((1, 1, 10))
 
-female_betas = np.zeros((1, 1, 10))
-male_betas = np.zeros((1, 1, 10))
+# print("female betas: ")
+# print(female_betas)
+# print("male betas: ")
+# print(male_betas)
+
 gammaResultsDir = "GammaResults"
 gammaSourceDir = "GammaSource"
 gammaResultFileName = "results.pkl"
@@ -86,7 +92,7 @@ class GammaServer(BaseHTTPRequestHandler):
         args = {"cfg_policy": 'Gamma_policy_guggenheim_v5',
                 'max_depth': 120, 
                 'ground_euler': [0, 0, 0], 
-                'gpu_index': 0, 
+                'gpu_index': -1, 
                 'random_seed': None, 
                 'verbose': 1,
                 'gender': gender,

@@ -376,7 +376,7 @@ class SMPLXParser:
         bparam['right_hand_pose'] = xb[:,81:]
         for key in bparam:
             if type(bparam[key]) == np.ndarray:
-                bparam[key] = torch.cuda.FloatTensor(bparam[key])
+                bparam[key] = torch.tensor(bparam[key], device=self.device, dtype=torch.float32)
             elif type(bparam[key]) == torch.Tensor and bparam[key].device!=self.device:
                 bparam[key] = bparam[key].to(self.device)
             else:

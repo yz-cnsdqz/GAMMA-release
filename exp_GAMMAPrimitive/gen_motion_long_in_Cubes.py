@@ -158,8 +158,8 @@ def gen_tree_roots(start_node, wpath):
                                     start_node.data['curr_target_wpath'],
                                     R0, T0, wpath)
     if body_repr == 'ssm2_67_condi_marker':
-        states = torch.cuda.FloatTensor(np.concatenate([marker_seed.reshape([1,-1]), fea_marker],axis=-1),
-                                    device=device)[None,...]
+        states = torch.tensor(np.concatenate([marker_seed.reshape([1,-1]), fea_marker],axis=-1),
+                                    device=device, dtype=torch.float32)[None,...]
     else:
         raise NotImplementedError
 
@@ -237,8 +237,8 @@ def expand_tree(mp_heap_prev, wpath, max_depth=10):
                                                     mp_prev.data['curr_target_wpath'],
                                                     R0, T0, wpath)
             if body_repr == 'ssm2_67_condi_marker':
-                states = torch.cuda.FloatTensor(np.concatenate([marker_seed, fea_marker],axis=-1),
-                                    device=device)[None,...]
+                states = torch.tensor(np.concatenate([marker_seed, fea_marker],axis=-1),
+                                    device=device, dtype=torch.float32)[None,...]
             else:
                 raise NotImplementedError
 
@@ -385,7 +385,7 @@ def configure_model(cfg, gpu_index, seed):
     testcfg['result_dir'] = cfgall.cfg_result_dir
     testcfg['seed'] = seed
     testcfg['log_dir'] = cfgall.cfg_log_dir
-    testop = GAMMAPrimitiveComboGenOP(predictorcfg, regressorcfg, testcfg)
+    testop = GAMMAPrimitiveComboGenOP(predictorcfg, regressorcfg, testcfg, device)
     testop.build_model(load_pretrained_model=True)
 
     return testop

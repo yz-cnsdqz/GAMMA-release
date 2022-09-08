@@ -1089,11 +1089,14 @@ class GAMMAPrimitiveComboGenOP(TestOP):
     """the interface to GAMMA when using it to produce motions
 
     """
-    def __init__(self, predictorcfg, regressorcfg, testconfig):
+    def __init__(self, predictorcfg, regressorcfg, testconfig, device=None):
         self.dtype = torch.float32
         gpu_index = testconfig.get('gpu_index',0)
-        self.device = torch.device('cuda',
-                index=gpu_index) if torch.cuda.is_available() else torch.device('cpu')
+        if device is None:
+            self.device = torch.device('cuda',
+                    index=gpu_index) if torch.cuda.is_available() else torch.device('cpu')
+        else:
+            self.device = device
         self.predictorcfg = predictorcfg
         self.regressorcfg = regressorcfg
         self.testconfig = testconfig
