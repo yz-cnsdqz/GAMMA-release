@@ -1,5 +1,10 @@
 # GAMMA: The Wanderings of Odysseus in 3D Scenes
 
+
+* :mega: [2022-10-19] We have populated the ETH main building with Microsoft Hololens 2. **The code and apps are released [here](https://github.com/boelukas/ar-population)!** Read its license before use.
+
+
+
 <p align="center">
   <img width="900" height="auto" src="demo.gif">
 </p>
@@ -26,8 +31,6 @@ This repo contains the official implementation of our paper. If you find our wor
     * Blender and its SMPL-X add-on employ their respective license.
 
 * The rests employ the **Apache 2.0 license**. When using the code, please cite our work as above.
-
-
 
 
 # Installation
