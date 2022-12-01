@@ -969,8 +969,8 @@ class GAMMAPrimitiveComboTrainOP(TrainOP):
                     Yg = ref_markers_[self.t_his:].view(self.t_pred,self.trainconfig['batch_size'], -1, 3)
                     Y = torch.einsum('bij,tbpj->tbpi', R_curr.permute(0,2,1), Yg-T_curr.unsqueeze(0) )
                     Y = Y.contiguous().view(self.t_pred,self.trainconfig['batch_size'], -1).detach()
-                    R_prev = R_curr
-                    T_prev = T_curr
+                    R_prev = R_curr.detach()
+                    T_prev = T_curr.detach()
 
             # forward pass of the model
             [Y_rec, mu, logvar, Yb_rec] = self.model(X, Y, betas_Y)
