@@ -690,7 +690,8 @@ if __name__ == '__main__':
         traj_z_logprob_2f_pool = torch.cat([torch.cat(traj_ppo['action_logprob'][1:]).detach() for traj_ppo in traj_ppo_list if len(traj_ppo['action_logprob'])>1 ]) #[b,d]
         traj_gae_2f_pool = torch.cat([torch.cat(traj_ppo['gae'][1:]).detach() for traj_ppo in traj_ppo_list if len(traj_ppo['gae'])>1 ]) #[b,d]
         traj_returns_2f_pool = torch.cat([torch.cat(traj_ppo['returns'][1:]).detach() for traj_ppo in traj_ppo_list if len(traj_ppo['returns'])>1] ) #[b,d]
-
+        N_samples = traj_gae_2f_pool.shape[0]
+        
         for _ in range(max_train_iter_2f):
             idx = 0
             rr = torch.randperm(N_samples)
