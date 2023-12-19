@@ -47,7 +47,7 @@ This repo contains the official implementation of our paper. If you find our wor
 
 ### Datasets
 * [**AMASS**](https://amass.is.tue.mpg.de): We downloaded and used the `SMPL+H G` bodies. To get better performance (e.g. bodies without self-interpenetration), please use `SMPL-X G` bodies instead. Note that the data formats of `SMPL-X G` might be different.
-* [**Cubes**](https://drive.google.com/drive/folders/1apT4ap84vaMwomSYymbVEBIIG-yQO5Yw?usp=sharing): Our synthetic scene with cubes as blockers. 
+* [**Cubes**](https://drive.google.com/drive/folders/1Vu_EiYNNQFO3gxyuM-QS_ua5kP-mCjhw?usp=sharing): Our synthetic scene with cubes as blockers. 
     * It includes the scene mesh, the navigation mesh, walking paths. 
     * The blender file conrtains the python script to visualize motions.
     * See [this use case](https://yz-cnsdqz.github.io/eigenmotion/GAMMA/) for more details. 
@@ -63,9 +63,9 @@ This repo contains the official implementation of our paper. If you find our wor
 * `num_motion_primitives` is the number of primitives in each sub-sequence. We set to 1 and 10, respectively. So we prepare **two** processed datasets.
 
 ### Models
-* [**CMU 41** marker placement](https://drive.google.com/file/d/1CcNBZCXA7_Naa0SGlYKCxk_ecnzftbSj/view?usp=sharing)
-* [**SSM2 67** marker placement](https://drive.google.com/file/d/1ozQuVjXoDLiZ3YGV-7RpauJlunPfcx_d/view?usp=sharing)
-* [**Pre-trained Checkpoints**](https://drive.google.com/drive/folders/1jODy-rssGq8WN1qCSOrOxvTw2wYNskPD?usp=sharing): put these folders into `results/exp_GAMMAPrimitive/`.
+* [**CMU 41** marker placement](https://drive.google.com/file/d/16-HpLbpI0B_Yt0tNukhaVMrAZjDze7h8/view?usp=sharing)
+* [**SSM2 67** marker placement](https://drive.google.com/file/d/18TzeN1yVjL16n1glcVVKNE7ZKc26vgU8/view?usp=sharing)
+* [**Pre-trained Checkpoints**](https://drive.google.com/drive/folders/1A9NTVmOP7S6XqaAvYpnq2G_hvnA4fGls?usp=sharing): put these folders into `results/exp_GAMMAPrimitive/`.
 
 ### Visualizating Motion in Blender
 * Blender 2.93 or above.
